@@ -156,17 +156,7 @@ async def get_groups(limit: int = 0):
     cur_page = 0
     
     while True:
-        print(f'[{datetime.now()}] Getting dialogs {(cur_page+1)*per_page}/{count}...')
-        r = await app.invoke(
-            functions.messages.GetDialogs(
-                offset_date=offset_date,
-                offset_id=offset_id,
-                offset_peer=offset_peer,
-                limit=limit,
-                hash=0
-            ),
-            sleep_threshold=60
-        )
+        r = await get_dialogs(cur_page, per_page, count, offset_date, offset_id, offset_peer, limit)
         
         users = {i.id: i for i in r.users}
         chats = {i.id: i for i in r.chats}
@@ -204,5 +194,23 @@ async def get_groups(limit: int = 0):
             break
     
     return groups
+
+async def get_dialogs(cur_page, per_page, count, offset_date, offset_id, offset_peer, limit):
+    print(f'[{datetime.now()}] Getting dialogs {(cur_page+1)*per_page}/{count}...')
+    try:
+        r = await app.invoke(
+            functions.messages.GetDialogs(
+                offset_date=offset_date,
+                offset_id=offset_id,
+                offset_peer=offset_peer,
+                limit=limit,
+                hash=0
+            )
+        )
+    except FloodWait as e:
+        print(f'[{datetime.now()}] Flood wait... TIME: {e.value}sec')
+        await sleep(e.value)
+        r = await get_dialogs(cur_page, per_page, count, offset_date, offset_id, offset_peer, limit)
+    return r
 
 app.run(main())
