@@ -50,8 +50,7 @@ async def main():
                 print('\nTHIS WILL DELETE ALL YOUR MESSSAGES IN ALL GROUPS!')
                 answer = input('Please type "I understand" to proceed: ')
                 if answer.upper() != 'I UNDERSTAND':
-                    print('Better safe than sorry. Aborting...')
-                    exit(-1)
+                    raise Exception('Better safe than sorry. Aborting...')
                 sel_groups = groups
                 break
         
