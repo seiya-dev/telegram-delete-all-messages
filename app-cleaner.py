@@ -12,7 +12,7 @@ chunk_size = 100
 
 async def main():
     print(f'[{datetime.now()}] Starting app...')
-    await app.connect()
+    await app.start()
     
     try:
         print(f'[{datetime.now()}] Collecting groups...')
@@ -67,7 +67,7 @@ async def main():
         print(f'\n[{datetime.now()}] An exception occurred:\n - {e}')
     
     print(f'\n[{datetime.now()}] Closing app...')
-    await app.disconnect()
+    await app.stop()
 
 async def delete_messages_from_groups(groups):
     for group in groups:

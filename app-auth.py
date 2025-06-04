@@ -6,8 +6,8 @@ API_HASH = input('Enter your Telegram API hash: ')
 app = Client('_client', api_id=API_ID, api_hash=API_HASH, no_updates=True)
 
 async def main():
-    await app.connect()
+    await app.start()
     await app.send_message("me", "Hi!")
-    await app.disconnect()
+    await app.stop()
 
 app.loop.run_until_complete(main())
