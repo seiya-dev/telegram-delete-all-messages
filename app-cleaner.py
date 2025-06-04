@@ -12,7 +12,7 @@ chunk_size = 100
 
 async def main():
     print(f'[{datetime.now()}] Starting app...')
-    await app.start()
+    await app.connect()
     
     try:
         print(f'[{datetime.now()}] Collecting groups...')
@@ -67,7 +67,7 @@ async def main():
         print(f'\n[{datetime.now()}] An exception occurred:\n - {e}')
     
     print(f'\n[{datetime.now()}] Closing app...')
-    await app.stop()
+    await app.disconnect()
 
 async def delete_messages_from_groups(groups):
     for group in groups:
@@ -212,4 +212,4 @@ async def get_dialogs(cur_page, per_page, count, offset_date, offset_id, offset_
         r = await get_dialogs(cur_page, per_page, count, offset_date, offset_id, offset_peer, limit)
     return r
 
-app.run(main())
+app.loop.run_until_complete(main())
